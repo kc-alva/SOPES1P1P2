@@ -12,6 +12,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
+/*
 type item struct {
 	UsedCPU   float32 `json:"CPU"`
 	OtherData int     `json:"otherData"`
@@ -24,7 +25,7 @@ type Post struct {
 }
 
 var posts []Post = []Post{}
-
+*/
 func main() {
 	router := mux.NewRouter()
 	router.HandleFunc("/cpu", currentPercent).Methods("GET")
