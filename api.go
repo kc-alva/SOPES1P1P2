@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -12,27 +13,14 @@ import (
 	"github.com/gorilla/mux"
 )
 
-/*
-type item struct {
-	UsedCPU   float32 `json:"CPU"`
-	OtherData int     `json:"otherData"`
-}
-
-//post is a post that gets in the post method
-type Post struct {
-	CPU  float64 `json:"cpu"`
-	Body string  `json:"body"`
-}
-
-var posts []Post = []Post{}
-*/
 func main() {
 	router := mux.NewRouter()
-	router.HandleFunc("/cpu", currentPercent).Methods("GET")
+	router.HandleFunc("/cpu", cpuData).Methods("GET")
+	router.HandleFunc("/ram", ramData).Methods("GET")
 	http.ListenAndServe(":5000", router)
 }
 
-func currentPercent(w http.ResponseWriter, r *http.Request) {
+func cpuData(w http.ResponseWriter, r *http.Request) {
 
 	//get item value from json body
 	idle0, total0 := getCPUSample()
@@ -72,5 +60,52 @@ func getCPUSample() (idle, total uint64) {
 			return
 		}
 	}
+	return
+}
+
+func ramData(w http.ResponseWriter, r *http.Request) {
+
+	//get item value from json body
+	memoTot, memoCons := getRAMSample()
+	totalMB := (memoTot / 1024)
+	consumedMB := (memoCons / 1024)
+	memPercent := (((float64(memoCons) / 1024) * 100) / (float64(memoTot) / 1024))
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(struct {
+		Dato1 int     `json:"total"`
+		Dato2 int     `json:"consumida"`
+		Dato3 float64 `json:"porcentaje"`
+	}{Dato1: totalMB, Dato2: consumedMB, Dato3: memPercent})
+}
+
+func getRAMSample() (memoriaTotal, memoriaConsumida int) {
+
+	contents, err := ioutil.ReadFile("/proc/meminfo")
+	if err != nil {
+		return
+	}
+	lines := strings.Split(string(contents), "\n")
+	cnt := 0
+	var memTotal string
+	var memFree string
+	a := regexp.MustCompile(`[-]?\d[\d,]*[\.]?[\d{2}]*`)
+	for _, line := range lines {
+
+		cnt++
+		if cnt == 1 {
+
+			b := a.FindAllString(line, 1)
+			memTotal = b[0]
+			fmt.Printf("tests - %s\n", b[0])
+		} else if cnt == 2 {
+			c := a.FindAllString(line, 1)
+			memFree = c[0]
+		}
+
+	}
+	memoriaTotal, err = strconv.Atoi(memTotal)
+	memoriaLibre, err := strconv.Atoi(memFree)
+	memoriaConsumida = memoriaTotal - memoriaLibre
 	return
 }
