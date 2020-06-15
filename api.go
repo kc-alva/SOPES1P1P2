@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
+	"os/exec"
 	"regexp"
 	"strconv"
 	"strings"
@@ -13,15 +15,176 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func main() {
-	router := mux.NewRouter()
-	router.HandleFunc("/cpu", cpuData).Methods("GET")
-	router.HandleFunc("/ram", ramData).Methods("GET")
-	http.ListenAndServe(":5000", router)
+type event struct {
+	ID          string `json:"ID"`
+	Title       string `json:"Title"`
+	Description string `json:"Description"`
 }
 
-func cpuData(w http.ResponseWriter, r *http.Request) {
+type principal struct {
+	Ejecucion     int         `json:"Ejecucion"`
+	Suspendidos   int         `json:"Suspendidos"`
+	Detenidos     int         `json:"Detendios"`
+	Zombie        int         `json:"Zombie"`
+	Total         int         `json:"Total"`
+	ListaProcesos allProcesos `json:"ListaProc"`
+}
 
+type proceso struct {
+	ID     string      `json:"ID"`
+	PPID   string      `json:"PPID"`
+	Nombre string      `json:"Nombre"`
+	Estado string      `json:"Estado"`
+	RAM    float64     `json:"RAM"`
+	Hijos  allProcesos `json:"Hijos"`
+}
+
+type allProcesos []proceso
+type allEvents []event
+
+var events = allEvents{
+	{
+		ID:          "1",
+		Title:       "Introduction to Golang",
+		Description: "Come join us for a chance to learn how golang works and get to eventually try it out",
+	},
+}
+
+func homeLink(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Welcome home!")
+}
+
+func getOneEvent(w http.ResponseWriter, r *http.Request) {
+	eventID := mux.Vars(r)["id"]
+
+	for _, singleEvent := range events {
+		if singleEvent.ID == eventID {
+			json.NewEncoder(w).Encode(singleEvent)
+		}
+	}
+}
+
+func getAllEvents(w http.ResponseWriter, r *http.Request) {
+	json.NewEncoder(w).Encode(events)
+}
+
+func getProcesos(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
+	carpetas, err := ioutil.ReadDir("/proc")
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	totalejec := 0
+	totalsuspe := 0
+	totaldeten := 0
+	totalzombie := 0
+
+	var procesos = allProcesos{}
+	var mensaje principal
+
+	for _, carpeta := range carpetas {
+		if carpeta.IsDir() {
+			r, _ := regexp.Compile("[0-9]+")
+			if !r.MatchString(carpeta.Name()) {
+				continue
+			}
+
+			var nuevoProceso proceso
+			nuevoProceso.ID = carpeta.Name()
+
+			stat, err := ioutil.ReadFile("/proc/" + nuevoProceso.ID + "/stat")
+			if err != nil {
+				log.Fatal(err)
+			}
+			statm, err := ioutil.ReadFile(("/proc/") + nuevoProceso.ID + "/statm")
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			contenidoStatm := strings.Split(string(statm), " ")
+			contenido := strings.Split(string(stat), " ")
+			ram, err := strconv.ParseFloat(contenidoStatm[1], 64)
+			ram = ram * 4
+			ram = (ram * 100) / 6003512
+			nuevoProceso.Nombre = strings.Replace(contenido[1], "(", "", -1)
+			nuevoProceso.Nombre = strings.Replace(nuevoProceso.Nombre, ")", "", -1)
+			nuevoProceso.Estado = getEstado(contenido[2])
+			nuevoProceso.RAM = ram
+			nuevoProceso.PPID = contenido[3]
+			procesos = append(procesos, nuevoProceso)
+
+			switch contenido[2] {
+			case "R":
+				totalejec++
+				break
+			case "S":
+				totalsuspe++
+				break
+			case "T":
+				totaldeten++
+				break
+			case "Z":
+				totalzombie++
+				break
+			}
+		}
+	}
+
+	mensaje.Ejecucion = totalejec
+	mensaje.Detenidos = totaldeten
+	mensaje.Suspendidos = totalsuspe
+	mensaje.Zombie = totalzombie
+	mensaje.Total = totalejec + totaldeten + totalsuspe + totalzombie
+	mensaje.ListaProcesos = procesos
+	println(mensaje.Suspendidos)
+	json.NewEncoder(w).Encode(mensaje)
+}
+
+func getEstado(s string) string {
+	switch s {
+	case "R":
+		return "Running"
+	case "S":
+		return "Sleeping"
+	case "D":
+		return "Waiting"
+	case "Z":
+		return "Zombie"
+	case "T":
+		return "Stopped"
+	case "t":
+		return "Tracing stop"
+	case "W":
+		return "Paging"
+	case "X":
+	case "x":
+		return "Dead"
+	case "K":
+		return "Wakekill"
+	case "P":
+		return "Parked"
+	}
+
+	return ""
+}
+
+func killProc(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
+	procID := mux.Vars(r)["id"]
+	out, err := exec.Command("kill", procID).Output()
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	fmt.Println("Proceso eliminado")
+	output := string(out[:])
+	fmt.Println(w, output)
+}
+
+func currentPercent(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
 	//get item value from json body
 	idle0, total0 := getCPUSample()
 	time.Sleep(500 * time.Millisecond)
@@ -52,8 +215,8 @@ func getCPUSample() (idle, total uint64) {
 				if err != nil {
 					fmt.Println("Error: ", i, fields[i], err)
 				}
-				total += val // tally up all the numbers to get total ticks
-				if i == 4 {  // idle is the 5th field in the cpu line
+				total += val
+				if i == 4 {
 					idle = val
 				}
 			}
@@ -63,9 +226,13 @@ func getCPUSample() (idle, total uint64) {
 	return
 }
 
-func ramData(w http.ResponseWriter, r *http.Request) {
+func enableCors(w *http.ResponseWriter) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+}
 
-	//get item value from json body
+func ramData(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
+
 	memoTot, memoCons := getRAMSample()
 	totalMB := (memoTot / 1024)
 	consumedMB := (memoCons / 1024)
@@ -108,4 +275,13 @@ func getRAMSample() (memoriaTotal, memoriaConsumida int) {
 	memoriaLibre, err := strconv.Atoi(memFree)
 	memoriaConsumida = memoriaTotal - memoriaLibre
 	return
+}
+
+func main() {
+	router := mux.NewRouter().StrictSlash(true)
+	router.HandleFunc("/proc", getProcesos).Methods("GET")
+	router.HandleFunc("/kill/{id}", killProc).Methods("GET")
+	router.HandleFunc("/cpu", currentPercent).Methods("GET")
+	router.HandleFunc("/ram", ramData).Methods("GET")
+	log.Fatal(http.ListenAndServe(":8080", router))
 }
