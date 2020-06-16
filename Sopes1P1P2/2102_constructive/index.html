@@ -99,16 +99,20 @@ http://www.tooplate.com/view/2102-constructive
 					<!-- section 1 -->
 					<section id="tm-section-1" class="tm-section">
 						<div class="ml-auto">
-							<header class="mb-4"><h1 class="tm-text-shadow">Constructive Design</h1></header>
-							<p class="mb-5 tm-font-big">Aenean fermentum vestibulum ipsum, ut pretium erat sodales sodales. Pellentesque quis orci vitae dui commodo sodales et ut quam. Etiam vitae egestas purus, ut malesuada enim.</p>
-							<a href="#" class="btn tm-btn tm-font-big" data-nav-link="#tmNavLink2">Continue...</a> 
+							<header class="mb-4"><h1 class="tm-text-shadow">SISTEMAS OPERATIVOS 1 </h1><h1 class="tm-text-shadow">PROYECTO 1</h1></header>
+							
+						</br>
+					</br>
+					</br>
+					<p class="mb-5 tm-font-big">JERSON EDUARDO VILLATORO NOVA - 201442819 </p>
+					<p class="mb-5 tm-font-big">KEVIN CRISTOPHER JUVENTINO ALVARADO MALDONADO - 201222567</p>
 							<!-- data-nav-link holds the ID of nav item, which means this link should behave the same as that nav item  -->
 						</div>
 					</section>
 
 					<section id="tm-section-62" class="tm-section">
 						<div class="ml-auto">
-							<header class="mb-4"><h1 class="tm-text-shadow">Constructive Design</h1></header>
+							<header class="mb-4"><h1 class="tm-text-shadow">Monitor RAM</h1></header>
 							<table>
 								<thead class="row">
 								  <th class="col-sm-2 testim_content"></th>
@@ -120,12 +124,14 @@ http://www.tooplate.com/view/2102-constructive
 						</div>
 						<div class="" id="tab4">
 							<p class="title"><b>Grafica </b> RAM</p>
-							<canvas id="myChart2"></canvas>
+							<div style="height:40vh; width:50vw">
+								<canvas id="myChart2"></canvas>
+							</div>
 						</div>
 					</section>
 					<section id="tm-section-63" class="tm-section">
 						<div class="ml-auto">
-							<header class="mb-4"><h1 class="tm-text-shadow">Constructive Design</h1></header>
+							<header class="mb-4"><h1 class="tm-text-shadow">Monitor CPU</h1></header>
 							<table>
 								<thead class="row">
 								  <th class="col-sm-2 testim_content"></th>
@@ -135,25 +141,34 @@ http://www.tooplate.com/view/2102-constructive
 								</tbody>
 							</table>							
 						</div>
-						<div class="" id="tab4">
-							<p class="title"><b>Grafica </b> RAM</p>
-							<canvas id="myChart"></canvas>
+						<div class="" id="tab4" >
+							<p class="title"><b>Grafica </b> CPU</p>
+							<div style="height:40vh; width:50vw">
+								<canvas id="myChart"></canvas>
+							</div>
 						</div>
 					</section>
 
 					<!-- section 2 -->
 					<section id="tm-section-2" class="tm-section tm-section-carousel">
 						<div>
-							<header class="mb-4"><h2 class="tm-text-shadow">Our Products</h2></header>		            
-							<div class="tm-img-container">
-								<div class="tm-img-slider">
-									<a href="img/gallery-img-01.jpg" class="tm-slider-img"><img src="img/gallery-img-01-tn.jpg" alt="Image" class="img-fluid"></a>
-									<a href="img/gallery-img-02.jpg" class="tm-slider-img"><img src="img/gallery-img-02-tn.jpg" alt="Image" class="img-fluid"></a>
-									<a href="img/gallery-img-03.jpg" class="tm-slider-img"><img src="img/gallery-img-03-tn.jpg" alt="Image" class="img-fluid"></a>
-									<a href="img/gallery-img-04.jpg" class="tm-slider-img"><img src="img/gallery-img-04-tn.jpg" alt="Image" class="img-fluid"></a>
-									<a href="img/gallery-img-05.jpg" class="tm-slider-img"><img src="img/gallery-img-05-tn.jpg" alt="Image" class="img-fluid"></a>
-									<a href="img/gallery-img-06.jpg" class="tm-slider-img"><img src="img/gallery-img-06-tn.jpg" alt="Image" class="img-fluid"></a>
-								</div>
+							<header class="mb-4"><h2 class="tm-text-shadow">LISTA DE PROCESOS</h2></header>		            
+							<div>
+								<table style="border: solid 1px black;background-color: blanchedalmond;">
+									<thead class="row">
+									  <th class="col-sm-2 testim_content"></th>
+									  <th class="col-sm-2 testim_content"></th>
+									</thead>
+									<tr>
+										<td style="color:#000000">PID</td>
+										<td style="color:#000000">NOMBRE</td>
+										<td style="color:#000000">RAM</td>
+										<td style="color:#000000">KILL</td>
+
+									</tr>
+									<tbody id="cuerpo3">
+									</tbody>
+								</table>
 							</div>		            		          
 						</div>       		          	
 					</section>
@@ -259,7 +274,6 @@ http://www.tooplate.com/view/2102-constructive
 		<script type="text/javascript" src="js/jquery.magnific-popup.min.js"></script>
 		<script type="text/javascript" src="js/jquery.backstretch.min.js"></script>
 		<script type="text/javascript" src="slick/slick.min.js"></script> <!-- Slick Carousel -->
-
 		<script>
 
 		var sidebarVisible = false;
@@ -456,6 +470,35 @@ http://www.tooplate.com/view/2102-constructive
 		  })
 		})
 
+		$(function(){
+		  $(document).ready(function(){
+			var cont = 0;
+			function getProc(){
+        $.get('http://localhost:8080/proc', function(data){
+        
+        var proc = data.ListaProc
+        console.log(data.Ejecucion)
+        $("#cuerpo3").html("");
+        for(var i=0; i<data.ListaProc.length; i++){
+          var tr = `<tr>
+          <td style="color:#0000ff">${proc[i].ID}</td>
+          <td style="color:#0000ff">${proc[i].Nombre}</td>
+          <td style="color:#0000ff">${proc[i].Estado}</td>
+          <td style="color:#0000ff">${proc[i].RAM}</td>
+		  <td style="color:#0000ff"> <button type="button" class="btn btn-primary" onClick="matarproceso(${proc[i].ID})" > KILL</button> </td>
+          
+          </tr>`;
+          $("#cuerpo3").append(tr)
+        }
+        })
+      }
+			setInterval(getProc,1000);
+		  })
+		})
+
+
+
+		
 
 		$(function(){
 		  $(document).ready(function(){
@@ -482,6 +525,12 @@ http://www.tooplate.com/view/2102-constructive
 		  })
 		})
 
+		function matarproceso(id){
+      $.get('http://localhost:8080/kill/'+id, function(data){
+        alert("KILL: " + id)
+        })
+      }
+
 		/*************************GRAFICAS***************************************/
 		
 		$(function(){
@@ -496,11 +545,12 @@ http://www.tooplate.com/view/2102-constructive
 							datasets:[{
 									label:'Estadisticas de Mi PC',
 									data:[0,0,0,0,0,0],
-									backgroundColor:"blue",
+									backgroundColor:"white",
 									borderColor: "lightblue",
-									fill:false,
+									fill:true,
 									lineTension:0,
 									pointRadius:5
+									
 							}]
 						},
 						options:{
@@ -551,9 +601,9 @@ http://www.tooplate.com/view/2102-constructive
 							datasets:[{
 									label:'Estadisticas de Mi PC',
 									data:[0,0,0,0,0,0,0,0,0,0,0],
-									backgroundColor:"green",
+									backgroundColor:"orange",
                         			borderColor: "lightgreen",
-									fill:false,
+									fill:true,
 									lineTension:0,
 									pointRadius:5
 							}]
