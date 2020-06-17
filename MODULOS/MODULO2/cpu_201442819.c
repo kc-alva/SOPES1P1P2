@@ -12,7 +12,7 @@
  
 MODULE_LICENSE("GPL");
 MODULE_DESCRIPTION("Escribe información de ram");
-MODULE_AUTHOR("Jerson Villatoro - 201442819");
+MODULE_AUTHOR("Jerson Villatoro y Kevin Alvarado");
  
 struct task_struct *task;
 struct task_struct *task_child;
@@ -42,7 +42,9 @@ static char * getEstado(long s){
 static int escribir_archivo(struct seq_file *m, void *v)
 {
     seq_printf(m,"Nombre Estudiante 1: JERSON VILLATORO\n");
-	seq_printf(m,"Carnet 1: 2014-42819\n\n\n");
+	seq_printf(m,"Carnet 1: 2014-42819");
+    seq_printf(m,"Nombre Estudiante 2: KEVIN ALVARADO\n");
+	seq_printf(m,"Carnet 1: 2012-22567");
 
     for_each_process( task ){
         seq_printf(m,"\nPID: %d NOMBRE: %s ESTADO: %s\n",task->pid, task->comm, getEstado(task->state));
@@ -71,7 +73,7 @@ static struct file_operations operaciones =
 static int iniciar(void)
 {
 	proc_create("cpu_201442819", 0, NULL, &operaciones);
-	printk(KERN_INFO "Carnet: 2014-42819\n");
+	printk(KERN_INFO "Carnet: 2014-42819 2012-22567\n");
 	return 0;
 }
 
