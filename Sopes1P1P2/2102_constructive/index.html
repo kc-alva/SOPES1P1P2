@@ -20,6 +20,11 @@ http://www.tooplate.com/view/2102-constructive
 	<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
 	<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
 	<link rel="stylesheet" href="css/tooplate-style.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
 
 	<script>
 		var renderPage = true;
@@ -80,13 +85,7 @@ http://www.tooplate.com/view/2102-constructive
 							<li>
 								<a href="#company" class="scrolly" data-bg-img="constructive_bg_03.jpg" data-page="#tm-section-3">
 									<i class="fas fa-users tm-nav-fa-icon"></i>
-									<span>Our Company</span>
-								</a>
-							</li>
-							<li>
-								<a href="#contact" class="scrolly" data-bg-img="constructive_bg_04.jpg" data-page="#tm-section-4">
-									<i class="fas fa-comments tm-nav-fa-icon"></i>
-									<span>Contact Us</span>
+									<span>ÁRBOL</span>
 								</a>
 							</li>
 						</ul>
@@ -113,7 +112,7 @@ http://www.tooplate.com/view/2102-constructive
 					<section id="tm-section-62" class="tm-section">
 						<div class="ml-auto">
 							<header class="mb-4"><h1 class="tm-text-shadow">Monitor RAM</h1></header>
-							<table>
+							<table style="border: solid 1px black;">
 								<thead class="row">
 								  <th class="col-sm-2 testim_content"></th>
 								  <th class="col-sm-2 testim_content"></th>
@@ -132,7 +131,7 @@ http://www.tooplate.com/view/2102-constructive
 					<section id="tm-section-63" class="tm-section">
 						<div class="ml-auto">
 							<header class="mb-4"><h1 class="tm-text-shadow">Monitor CPU</h1></header>
-							<table>
+							<table style="border: solid 1px black;">
 								<thead class="row">
 								  <th class="col-sm-2 testim_content"></th>
 								  <th class="col-sm-2 testim_content"></th>
@@ -152,9 +151,19 @@ http://www.tooplate.com/view/2102-constructive
 					<!-- section 2 -->
 					<section id="tm-section-2" class="tm-section tm-section-carousel">
 						<div>
-							<header class="mb-4"><h2 class="tm-text-shadow">LISTA DE PROCESOS</h2></header>		            
+							<header class="mb-4"><h2 class="tm-text-shadow">LISTA DE PROCESOS</h2></header>
 							<div>
-								<table style="border: solid 1px black;background-color: blanchedalmond;">
+								<table style="border: solid 1px black;">
+									<thead class="row">
+									  <th class="col-sm-2 testim_content"></th>
+									  <th class="col-sm-2 testim_content"></th>
+									</thead>
+									<tbody id="cuerpo5">
+									</tbody>
+								</table>
+							</div>		            
+							<div>
+								<table style="border: solid 1px black;background-color: #dcdcdc;">
 									<thead class="row">
 									  <th class="col-sm-2 testim_content"></th>
 									  <th class="col-sm-2 testim_content"></th>
@@ -162,6 +171,7 @@ http://www.tooplate.com/view/2102-constructive
 									<tr>
 										<td style="color:#000000">PID</td>
 										<td style="color:#000000">NOMBRE</td>
+										<td style="color:#000000">ESTADO</td>
 										<td style="color:#000000">RAM</td>
 										<td style="color:#000000">KILL</td>
 
@@ -175,47 +185,10 @@ http://www.tooplate.com/view/2102-constructive
 
 					<!-- section 3 -->
 					<section id="tm-section-3" class="tm-section">						
-						<div class="row mb-4">
-							<header class="col-xl-12"><h2 class="tm-text-shadow">Our Company</h2></header>		
-						</div>
-						<div class="row">
-							<div class="col-sm-12 col-md-6 col-lg-12 col-xl-6 mb-4">
-								<div class="media tm-bg-transparent-black tm-border-white">
-									<i class="fab fa-apple tm-icon-circled tm-icon-media"></i>
-									<div class="media-body">
-										<h3>HTML Templates</h3>
-										<p>We provide a variety of templates for you at no cost. Please spread a word about <a href="https://plus.google.com/+tooplate" target="_parent">Tooplate</a> website. Thank you.</p>	
-									</div>
-								</div>
-							</div>	
-							<div class="col-sm-12 col-md-6 col-lg-12 col-xl-6 mb-4">
-								<div class="media tm-bg-transparent-black tm-border-white">
-									<i class="fas fa-map-pin mr-4 tm-icon-circled tm-icon-media"></i>	
-									<div class="media-body">
-										<h3>Free Images</h3>
-										<p>Photos by <a href="https://unsplash.com" target="_blank">Unsplash.com</a> website, ac ornare arcu finibus sed. Aenean ultrices nisi sit amet facilisis viverra.</p>	
-									</div>
-								</div>
-							</div>
-							<div class="col-sm-12 col-md-6 col-lg-12 col-xl-6 mb-4">
-								<div class="media tm-bg-transparent-black tm-border-white">
-									<i class="fab fa-fly mr-4 tm-icon-circled tm-icon-media"></i>
-									<div class="media-body">
-										<h3>Phasellus eleifend</h3>
-										<p>Phasellus feugiat scelerisque sapien, ac ornare arcu finibus sed. Aenean ultrices nisi sit amet facilisis viverra.</p>		
-									</div>
-								</div>
-							</div>
-							<div class="col-sm-12 col-md-6 col-lg-12 col-xl-6 mb-4">
-								<div class="media tm-bg-transparent-black tm-border-white">
-									<i class="fab fa-linode mr-4 tm-icon-circled tm-icon-media"></i>
-									<div class="media-body">
-										<h3>Phasellus eleifend</h3>
-										<p>Phasellus feugiat scelerisque sapien, ac ornare arcu finibus sed. Aenean ultrices nisi sit amet facilisis viverra.</p>	
-									</div>
-								</div>
-							</div>			          		
-						</div>						               
+						<h1>ARBOL</h1>
+							<div id="cuerpo4">
+								
+							</div>				               
 					</section>
 
 					<!-- section 4 -->
@@ -270,7 +243,7 @@ http://www.tooplate.com/view/2102-constructive
 		<div id="preload-03"></div>
 		<div id="preload-04"></div>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js"></script>
-		<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+		<!-- <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script> -->
 		<script type="text/javascript" src="js/jquery.magnific-popup.min.js"></script>
 		<script type="text/javascript" src="js/jquery.backstretch.min.js"></script>
 		<script type="text/javascript" src="slick/slick.min.js"></script> <!-- Slick Carousel -->
@@ -445,6 +418,58 @@ http://www.tooplate.com/view/2102-constructive
 		
 
 		</script>
+
+			<script>
+				$(function(){
+				$(document).ready(function(){
+					var cont = 0;
+					
+					function arbol(){
+						$.get('http://localhost:8080/proc', function(data){
+
+							var proc = data.ListaProc
+							
+						$("#cuerpo4").html("");
+						var tr = '<div id="jstree" class="col-lg-12" style="font-weight:bold; background-color:#4AA4F4"> <ul>'
+						for(var i=0; i<proc.length-1; i++){
+							tr += `<li>${proc[i].Nombre} `
+							var proceso = proc[i].Hijos.split(" ")
+							var hijos = `<ul>`;
+							for(var x=0; x<proceso.length-1; x++){
+								hijos += `<li id="${proceso[x]}">${proceso[x]}</li>`	
+							}
+							tr += hijos + '</ul> </li>'
+							
+							
+						}		
+							tr += ` </ul></div> `
+							
+							console.log(tr)
+							$("#cuerpo4").append(tr)
+
+							$(function() {  
+								$('#jstree').on("changed.jstree", function (e, data) {
+									console.log(data.selected);
+									});
+								});
+
+								$(function() {  
+								$.jstree.defaults.core.themes.variant = "large";
+								$('#jstree').jstree();
+								});
+
+								$(function() {  
+								$('#jstree').jstree({
+								"plugins" : [ "wholerow", "checkbox" ]
+								});
+								});
+						})
+					}
+					arbol()
+					//setInterval(peticionram,1000);
+				})
+				})
+			</script>
 <script>
 	var arreglo = []
 	$(function(){
@@ -455,14 +480,7 @@ http://www.tooplate.com/view/2102-constructive
 					
 					console.log(cont++);
 				$("#cuerpo1").html("");
-					var tr = `<tr>
-					<td class="col-sm-2 testim_content" style = "color:yellow">Porcentaje de CPU utilizado</td>
-					
-					</tr>
-					<tr>
-					<td class="col-sm-2 testim_content" style = "color:yellow">${data.porcentaje}</td>
-					
-					</tr>`;
+					var tr = `<tr><td style = "color:black;font-weight:bold;">Porcentaje CPU:   </td><td style="font-weight:bold">${data.porcentaje}</td></tr>`
 					$("#cuerpo1").append(tr)
 				})
 			}
@@ -477,15 +495,25 @@ http://www.tooplate.com/view/2102-constructive
         $.get('http://localhost:8080/proc', function(data){
         
         var proc = data.ListaProc
-        console.log(data.Ejecucion)
+
+		$("#cuerpo5").html("");
+					var tr = `<tr><td style = "color:black;font-weight:bold;">En Ejecución:   </td><td style="font-weight:bold;color:black">${data.Ejecucion}</td></tr>`
+					tr += `<tr><td style = "color:black;font-weight:bold;">Suspendidos:   </td><td style="font-weight:bold;color:black">${data.Suspendidos}</td></tr>`
+					tr += `<tr><td style = "color:black;font-weight:bold;">Detenidos:   </td><td style="font-weight:bold;color:black">${data.Detendios}</td></tr>`
+					tr += `<tr><td style = "color:black;font-weight:bold;">Zombie:   </td><td style="font-weight:bold;color:black">${data.Zombie}</td></tr>`
+					tr += `<tr><td style = "color:black;font-weight:bold;">Total:   </td><td style="font-weight:bold;color:black">${data.Total}</td></tr>`
+					
+					$("#cuerpo5").append(tr)
+		
+
         $("#cuerpo3").html("");
         for(var i=0; i<data.ListaProc.length; i++){
-          var tr = `<tr>
-          <td style="color:#0000ff">${proc[i].ID}</td>
-          <td style="color:#0000ff">${proc[i].Nombre}</td>
-          <td style="color:#0000ff">${proc[i].Estado}</td>
-          <td style="color:#0000ff">${proc[i].RAM}</td>
-		  <td style="color:#0000ff"> <button type="button" class="btn btn-primary" onClick="matarproceso(${proc[i].ID})" > KILL</button> </td>
+          var tr = `<tr style="border: 1px solid #000000;font-weight:bold">
+          <td style="color:#000000;border: 1px solid #000000;">${proc[i].ID}</td>
+          <td style="color:#000000;border: 1px solid #000000;">${proc[i].Nombre}</td>
+          <td style="color:#000000;border: 1px solid #000000;">${proc[i].Estado}</td>
+          <td style="color:#000000;border: 1px solid #000000;">${proc[i].RAM}</td>
+		  <td style="color:#000000;border: 1px solid #000000;"> <button type="button" class="btn btn-primary" onClick="matarproceso(${proc[i].ID})" > KILL</button> </td>
           
           </tr>`;
           $("#cuerpo3").append(tr)
@@ -508,16 +536,9 @@ http://www.tooplate.com/view/2102-constructive
 					
 					
 				$("#cuerpo2").html("");
-					var tr = `<tr>
-					<td class="col-sm-2 testim_content" style = "color:yellow">Total memoria RAM del servidor (MB)</td>
-					<td class="col-sm-2 testim_content" style = "color:yellow">Total memoria RAM Consumida (MB)</td>
-					<td class="col-sm-2 testim_content" style = "color:yellow">Porcentaje de Consumo RAM</td>
-					</tr>
-					<tr>
-					<td class="col-sm-2 testim_content" style = "color:yellow">${data.total}</td>
-					<td class="col-sm-2 testim_content" style = "color:yellow">${data.consumida}</td>
-					<td class="col-sm-2 testim_content" style = "color:yellow">${data.porcentaje}</td>
-					</tr>`;
+					var tr = `<tr><td style = "color:black;font-weight:bold;">Total Memoria Ram (MB):   </td><td style="font-weight:bold">${data.total}</td></tr>`
+					tr += `<tr><td style = "color:black;font-weight:bold;">Total Memoria Ram Consumida (MB):   </td><td style="font-weight:bold">${data.consumida}</td></tr>`
+					tr += `<tr><td style = "color:black;font-weight:bold;">Porcentaje consumido:   </td><td style="font-weight:bold">${data.porcentaje}</td></tr>`
 					$("#cuerpo2").append(tr)
 				})
 			}
@@ -546,7 +567,7 @@ http://www.tooplate.com/view/2102-constructive
 									label:'Estadisticas de Mi PC',
 									data:[0,0,0,0,0,0],
 									backgroundColor:"white",
-									borderColor: "lightblue",
+									borderColor: "#4AA4F4",
 									fill:true,
 									lineTension:0,
 									pointRadius:5
@@ -601,8 +622,8 @@ http://www.tooplate.com/view/2102-constructive
 							datasets:[{
 									label:'Estadisticas de Mi PC',
 									data:[0,0,0,0,0,0,0,0,0,0,0],
-									backgroundColor:"orange",
-                        			borderColor: "lightgreen",
+									backgroundColor:"white",
+                        			borderColor: "#4AA4F4",
 									fill:true,
 									lineTension:0,
 									pointRadius:5
